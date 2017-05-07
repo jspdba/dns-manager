@@ -13,13 +13,10 @@ import java.security.NoSuchAlgorithmException;
  */
 public class SignUtil {
     // 以下是一段计算签名的示例代码
-    final String ALGORITHM = "HmacSHA1";
-    final String ENCODING = "UTF-8";
+    private static final  String ALGORITHM = "HmacSHA1";
+    private static final String ENCODING = "UTF-8";
 
-    public String sign(String key,String stringToSign) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
-
-        key = "testsecret&";
-
+    public static String sign(String key, String stringToSign) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException {
         Mac mac = Mac.getInstance(ALGORITHM);
         mac.init(new SecretKeySpec( key.getBytes(ENCODING), ALGORITHM));
         byte[] signData = mac.doFinal(stringToSign.getBytes(ENCODING));
