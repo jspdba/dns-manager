@@ -1,0 +1,8 @@
+{
+  "Version":"2015-01-09",
+  "AccessKeyID":"testid",
+  "AccessKeySecret":"testsecret",
+  "SignatureMethod":"HMAC-SHA1",
+  "SignatureVersion":"1.0",
+  "Format":"JSON"
+}
