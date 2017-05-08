@@ -39,10 +39,8 @@ public class Main {
 
             //标准请求字符串签名
             main.Signature=main.signString(main.normalRequestUri);
-            System.out.println(main.Signature);
             //最终请求字符串
             main.normalRequestUri = main.buildFinalRequestString(map);
-            System.out.println(main.normalRequestUri);
             String url=main.HOST+"?"+main.normalRequestUri;
             System.out.println(HttpClientUtil.get(url));
         }
