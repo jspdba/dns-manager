@@ -1,6 +1,7 @@
 package com.womaiapp;
 
 import com.womaiapp.util.AliDnsUtil;
+import com.womaiapp.util.HttpClientUtil;
 import org.apache.commons.cli.*;
 
 import java.io.UnsupportedEncodingException;
@@ -16,7 +17,7 @@ public class Main {
     //配置文件
     private Config config;
     //服务器地址
-    private final String HOST = "http//alidns.aliyuncs.com/";
+    private String HOST = "http://alidns.aliyuncs.com/";
     //请求参数
     private String params;
 
@@ -27,7 +28,7 @@ public class Main {
     //签名
     private String Signature;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Main main = new Main();
         main.init(args);
         //开始解析请求参数
@@ -42,6 +43,8 @@ public class Main {
             //最终请求字符串
             main.normalRequestUri = main.buildFinalRequestString(map);
             System.out.println(main.normalRequestUri);
+            String url=main.HOST+"?"+main.normalRequestUri;
+            System.out.println(HttpClientUtil.get(url));
         }
     }
 
@@ -62,8 +65,6 @@ public class Main {
 
         // 生成stringToSign字符串
         StringBuilder stringToSign = new StringBuilder();
-        stringToSign.append(HTTP_METHOD).append(SEPARATOR);
-        stringToSign.append(percentEncode("/")).append(SEPARATOR);
 
         StringBuilder canonicalizedQueryString = new StringBuilder();
         for (String key : keys) {
@@ -74,7 +75,7 @@ public class Main {
         }
 
         // 这里注意对canonicalizedQueryString进行编码
-        return stringToSign.append(percentEncode(canonicalizedQueryString.toString().substring(1))).toString();
+        return stringToSign.append(canonicalizedQueryString.toString().substring(1)).toString();
     }
 
 
@@ -86,12 +87,13 @@ public class Main {
     private String prepareSign(Map<String, String> parameters) {
         parameters.put("Version", this.config.getVersion());
         parameters.put("AccessKeyId", this.config.getAccessKeyID());
-        parameters.put("TimeStamp", formatIso8601Date(new Date()));
+        parameters.put("Timestamp", formatIso8601Date(new Date()));
         parameters.put("SignatureMethod", this.config.getSignatureMethod());
         parameters.put("SignatureVersion", this.config.getSignatureVersion());
         parameters.put("SignatureNonce", UUID.randomUUID().toString());
         parameters.put("Format", this.config.getFormat());
 
+        System.out.println(parameters.get("SignatureNonce"));
 
 
         // 对参数进行排序，注意严格区分大小写
@@ -205,7 +207,6 @@ public class Main {
 
         CommandLineParser parser = new DefaultParser();
         CommandLine cmd = parser.parse(options,args);
-        //将除了选项之外的参数打印出来 otherfilename
 //        String[] s = cmd.getArgs();
         //询问是否有help
         if(cmd.hasOption("help")) {
@@ -219,7 +220,7 @@ public class Main {
         if(cmd.hasOption("c")){
             filename = cmd.getOptionValue("c");
         }else{
-            filename = AliDnsUtil.class.getClassLoader().getResource("config.json").getPath();
+            filename = "config.json";
         }
 
         if(filename!=null){
@@ -240,4 +241,7 @@ public class Main {
         this.config = AliDnsUtil.loadConfig(filename);
     }
 
+    public String getHOST() {
+        return HOST;
+    }
 }

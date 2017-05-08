@@ -20,3 +20,8 @@
     例如: -c "D:/zhongliang/dns-manager/src/main/resources/config.json"
 2. 参数: -p "请求字符串"
     例如: -p "Action=DescribeDomainRecords&DomainName=example.com"
+例如
+    java -jar dns-manager-1.0-SNAPSHOT.jar -p "Action=DescribeDomainInfo&DomainName=womaiapp.com"
+    
+    195c0f18-1fe4-4b67-ac7a-85cef47963a7
+    7a2aee88-af15-48f5-8e10-9e311d2ffe00
