@@ -1,6 +1,5 @@
 package com.womaiapp;
-import com.womaiapp.util.DateFormatUtil;
-import com.womaiapp.util.EncodeUtil;
+import com.womaiapp.util.AliDnsUtil;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
@@ -50,7 +49,7 @@ public class Test {
     private static String percentEncode(String str){
         String ret;
         try {
-            ret = EncodeUtil.percentEncode(str);
+            ret = AliDnsUtil.percentEncode(str);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             ret = str;
@@ -59,6 +58,6 @@ public class Test {
     }
 
     private static String formatIso8601Date(Date date) {
-        return DateFormatUtil.formatIso8601Date(date);
+        return AliDnsUtil.formatIso8601Date(date);
     }
 }

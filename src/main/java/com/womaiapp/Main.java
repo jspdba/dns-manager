@@ -1,9 +1,6 @@
 package com.womaiapp;
 
-import com.womaiapp.util.DateFormatUtil;
-import com.womaiapp.util.EncodeUtil;
-import com.womaiapp.util.JacksonUtil;
-import com.womaiapp.util.SignUtil;
+import com.womaiapp.util.AliDnsUtil;
 import org.apache.commons.cli.*;
 
 import java.io.UnsupportedEncodingException;
@@ -105,7 +102,7 @@ public class Main {
     private String signString(String stringToSign) {
         String ret;
         try {
-            ret = SignUtil.sign(this.config.getAccessKeySecret() + "&", stringToSign);
+            ret = AliDnsUtil.sign(this.config.getAccessKeySecret() + "&", stringToSign);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             ret=stringToSign;
@@ -127,7 +124,7 @@ public class Main {
     private static String percentEncode(String str){
         String ret;
         try {
-            ret = EncodeUtil.percentEncode(str);
+            ret = AliDnsUtil.percentEncode(str);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             ret = str;
@@ -135,7 +132,7 @@ public class Main {
         return ret;
     }
     private static String formatIso8601Date(Date date) {
-        return DateFormatUtil.formatIso8601Date(date);
+        return AliDnsUtil.formatIso8601Date(date);
     }
 
 
@@ -199,7 +196,7 @@ public class Main {
         if(cmd.hasOption("c")){
             filename = cmd.getOptionValue("c");
         }else{
-            filename = JacksonUtil.class.getClassLoader().getResource("config.json").getPath();
+            filename = AliDnsUtil.class.getClassLoader().getResource("config.json").getPath();
         }
 
         if(filename!=null){
@@ -217,7 +214,7 @@ public class Main {
     }
 
     private void loadConfig(String filename) throws ParseException {
-        this.config = JacksonUtil.loadConfig(filename);
+        this.config = AliDnsUtil.loadConfig(filename);
     }
 
 }
