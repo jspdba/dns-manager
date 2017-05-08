@@ -91,8 +91,6 @@ public class Main {
         parameters.put("SignatureNonce", UUID.randomUUID().toString());
         parameters.put("Format", this.config.getFormat());
 
-        System.out.println(parameters.get("SignatureNonce"));
-
 
         // 对参数进行排序，注意严格区分大小写
         String[] sortedKeys = parameters.keySet().toArray(new String[]{});
