@@ -15,13 +15,17 @@
     https://help.aliyun.com/document_detail/29747.html?spm=5176.doc29751.6.590.eCtOuZ
 #签名算法
     https://help.aliyun.com/document_detail/29819.html?spm=5176.doc29747.2.2.SUHGfb
+    
+    
 #文档说明
+##config.json 存放了公共请求参数，使用前请修改这个文件
+##代码已放到github 地址: https://github.com/jspdba/dns-manager/tree/4609089599265e97d550862a67862d3e020eea13
+
 1. 参数：-c "配置文件路径"
-    例如: -c "D:/zhongliang/dns-manager/src/main/resources/config.json"
+    例如: java -jar dns-manager-1.0-SNAPSHOT.jar -c "D:/zhongliang/dns-manager/src/main/resources/config.json"
 2. 参数: -p "请求字符串"
-    例如: -p "Action=DescribeDomainRecords&DomainName=example.com"
+    例如: java -jar dns-manager-1.0-SNAPSHOT.jar -p "Action=DescribeDomainRecords&DomainName=example.com"
+3. -help 帮助
+    例如 java -jar dns-manager-1.0-SNAPSHOT.jar -help
 例如
     java -jar dns-manager-1.0-SNAPSHOT.jar -p "Action=DescribeDomainInfo&DomainName=womaiapp.com"
-    
-    195c0f18-1fe4-4b67-ac7a-85cef47963a7
-    7a2aee88-af15-48f5-8e10-9e311d2ffe00
