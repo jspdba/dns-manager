@@ -22,6 +22,9 @@ public class Main {
 
     private static final String HTTP_METHOD = "GET";
     private final String SEPARATOR = "&";
+    //标准请求字符串
+    private String normalRequestUri;
+    //签名
     private String Signature;
 
     public static void main(String[] args) {
@@ -30,12 +33,29 @@ public class Main {
         //开始解析请求参数
         if (main.params != null) {
             Map<String, String> map = main.parseToMap(main.params);
-            main.buildRequestString(map);
-            main.buildFinalRequestString(map);
+            //构建标准请求字符串
+            main.prepareSign(map);
+
+            //标准请求字符串签名
+            main.Signature=main.signString(main.normalRequestUri);
+            System.out.println(main.Signature);
+            //最终请求字符串
+            main.normalRequestUri = main.buildFinalRequestString(map);
+            System.out.println(main.normalRequestUri);
         }
     }
 
+    /**
+     * 构造请求字符串
+     * @param map
+     * @return
+     */
     private String buildFinalRequestString(Map<String, String> map) {
+        //加入签名参数
+        if(!map.containsKey("Signature")){
+            map.put("Signature", this.Signature);
+        }
+
         // 对参数进行排序，注意严格区分大小写
         String[] keys = map.keySet().toArray(new String[]{});
 
@@ -57,12 +77,13 @@ public class Main {
         return stringToSign.append(percentEncode(canonicalizedQueryString.toString().substring(1))).toString();
     }
 
+
     /**
-     * 创建基本请求字符串
-     *
+     * 构造标准请求字符串
      * @param parameters
+     * @return
      */
-    private void buildRequestString(Map<String, String> parameters) {
+    private String prepareSign(Map<String, String> parameters) {
         parameters.put("Version", this.config.getVersion());
         parameters.put("AccessKeyId", this.config.getAccessKeyID());
         parameters.put("TimeStamp", formatIso8601Date(new Date()));
@@ -72,10 +93,10 @@ public class Main {
         parameters.put("Format", this.config.getFormat());
 
 
+
         // 对参数进行排序，注意严格区分大小写
         String[] sortedKeys = parameters.keySet().toArray(new String[]{});
         Arrays.sort(sortedKeys);
-
 
         // 生成stringToSign字符串
         StringBuilder stringToSign = new StringBuilder();
@@ -89,20 +110,22 @@ public class Main {
                     .append(percentEncode(key)).append("=")
                     .append(percentEncode(parameters.get(key)));
         }
-
         // 这里注意对canonicalizedQueryString进行编码
         stringToSign.append(percentEncode(canonicalizedQueryString.toString().substring(1)));
-        System.out.println(stringToSign);
-        this.Signature = signString(stringToSign.toString());
-        System.out.println(this.Signature);
-        parameters.put("Signature", this.Signature);
+
+        //构建标准请求字符串
+        this.normalRequestUri = stringToSign.toString();
+        return this.normalRequestUri;
     }
 
+
     //对请求字符串进行签名
-    private String signString(String stringToSign) {
+    private  String signString(String stringToSign) {
         String ret;
         try {
             ret = AliDnsUtil.sign(this.config.getAccessKeySecret() + "&", stringToSign);
+            //保留签名
+            this.Signature=ret;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             ret=stringToSign;

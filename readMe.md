@@ -15,3 +15,8 @@
     https://help.aliyun.com/document_detail/29747.html?spm=5176.doc29751.6.590.eCtOuZ
 #签名算法
     https://help.aliyun.com/document_detail/29819.html?spm=5176.doc29747.2.2.SUHGfb
+#文档说明
+1. 参数：-c "配置文件路径"
+    例如: -c "D:/zhongliang/dns-manager/src/main/resources/config.json"
+2. 参数: -p "请求字符串"
+    例如: -p "Action=DescribeDomainRecords&DomainName=example.com"
